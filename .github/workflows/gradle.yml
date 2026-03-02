@@ -23,4 +23,5 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Build
-        run: ./gradlew :app:clean :app:test
+        working-directory: app
+        run: ./gradlew clean test jacocoTestReport
