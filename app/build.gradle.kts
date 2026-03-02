@@ -1,7 +1,8 @@
 plugins {
-    java
+    application
+    checkstyle
     jacoco
-    id("org.sonarqube") version "6.0.1.5171"
+    id("org.sonarqube") version "5.1.0.4882"
 }
 
 group = "hexlet.code"
@@ -9,6 +10,10 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+}
+
+application {
+    mainClass.set("hexlet.code.App")
 }
 
 dependencies {
@@ -27,15 +32,18 @@ tasks.jacocoTestReport {
     reports {
         xml.required.set(true)
         html.required.set(true)
-        csv.required.set(false)
     }
 }
 
-sonar {
+checkstyle {
+    toolVersion = "10.3.4"
+    configFile = file("config/checkstyle/checkstyle.xml")
+}
+
+sonarqube {
     properties {
         property("sonar.projectKey", "GaraevIM_java-project-78")
         property("sonar.organization", "garaevim")
-        property("sonar.host.url", "https://sonarcloud.io")
         property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
     }
 }
