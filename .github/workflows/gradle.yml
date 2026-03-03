@@ -37,7 +37,6 @@ jobs:
         run: ./gradlew clean build
 
       - name: SonarCloud analysis
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: ./gradlew sonar -Dsonar.host.url=https://sonarcloud.io
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
