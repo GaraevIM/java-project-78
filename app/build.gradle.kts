@@ -24,7 +24,6 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
-    finalizedBy(tasks.jacocoTestReport)
 }
 
 tasks.jacocoTestReport {
@@ -32,6 +31,7 @@ tasks.jacocoTestReport {
     reports {
         xml.required.set(true)
         html.required.set(true)
+        csv.required.set(false)
     }
 }
 
@@ -44,6 +44,8 @@ sonarqube {
     properties {
         property("sonar.projectKey", "GaraevIM_java-project-78")
         property("sonar.organization", "garaevim")
+        property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.sourceEncoding", "UTF-8")
         property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
     }
 }

@@ -20,6 +20,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
@@ -33,10 +35,10 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build (tests + checkstyle)
-        run: ./gradlew clean build
+      - name: Build, test and generate JaCoCo report
+        run: ./gradlew clean test jacocoTestReport check
 
       - name: SonarCloud analysis
-        run: ./gradlew sonar -Dsonar.host.url=https://sonarcloud.io
+        run: ./gradlew sonarqube
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
