@@ -162,4 +162,21 @@ class MapSchemaTest {
         user.put("name", "Bob");
         assertFalse(schema.isValid(user));
     }
+
+    @Test
+    void testShapeWithMissingField() {
+        var validator = new Validator();
+        MapSchema schema = validator.map();
+
+        Map<String, BaseSchema<?>> schemas = new HashMap<>();
+        schemas.put("name", validator.string().required());
+        schemas.put("age", validator.number().required().positive());
+
+        schema.shape(schemas);
+
+        Map<String, Object> user = new HashMap<>();
+        user.put("name", "Alex");
+
+        assertFalse(schema.isValid(user));
+    }
 }

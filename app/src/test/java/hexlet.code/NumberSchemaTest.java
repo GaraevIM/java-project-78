@@ -79,4 +79,25 @@ class NumberSchemaTest {
         assertTrue(schema.range(1, 5).range(10, 20).isValid(15));
         assertFalse(schema.isValid(4));
     }
+
+    @Test
+    void testPositiveCalledMultipleTimes() {
+        var validator = new Validator();
+        NumberSchema schema = validator.number().positive().positive();
+
+        assertTrue(schema.isValid(1));
+        assertFalse(schema.isValid(0));
+    }
+
+    @Test
+    void testRangeWithNegativeNumbers() {
+        var validator = new Validator();
+        NumberSchema schema = validator.number().range(-5, 5);
+
+        assertTrue(schema.isValid(-5));
+        assertTrue(schema.isValid(0));
+        assertTrue(schema.isValid(5));
+        assertFalse(schema.isValid(-6));
+        assertFalse(schema.isValid(6));
+    }
 }

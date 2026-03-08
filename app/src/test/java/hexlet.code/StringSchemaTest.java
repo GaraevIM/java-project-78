@@ -86,4 +86,23 @@ class StringSchemaTest {
 
         assertTrue(schema.minLength(10).minLength(4).isValid("Hexlet"));
     }
+
+    @Test
+    void testContainsCalledMultipleTimes() {
+        var validator = new Validator();
+        StringSchema schema = validator.string();
+
+        assertTrue(schema.contains("bc").contains("cd").isValid("abcde"));
+        assertFalse(schema.isValid("abxyz"));
+    }
+
+    @Test
+    void testRequiredWithOtherChecks() {
+        var validator = new Validator();
+        StringSchema schema = validator.string().minLength(3).contains("ab").required();
+
+        assertFalse(schema.isValid(null));
+        assertFalse(schema.isValid(""));
+        assertTrue(schema.isValid("abc"));
+    }
 }
