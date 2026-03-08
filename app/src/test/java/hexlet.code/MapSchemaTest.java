@@ -1,5 +1,6 @@
 package hexlet.code;
 
+import hexlet.code.schemas.BaseSchema;
 import hexlet.code.schemas.MapSchema;
 import java.util.HashMap;
 import java.util.Map;
@@ -81,5 +82,84 @@ class MapSchemaTest {
         data.put("key3", "value3");
 
         assertTrue(schema.isValid(data));
+    }
+
+    @Test
+    void testShapeValid() {
+        var validator = new Validator();
+        MapSchema schema = validator.map();
+
+        Map<String, BaseSchema<?>> schemas = new HashMap<>();
+        schemas.put("firstName", validator.string().required());
+        schemas.put("lastName", validator.string().required().minLength(2));
+
+        schema.shape(schemas);
+
+        Map<String, String> human = new HashMap<>();
+        human.put("firstName", "John");
+        human.put("lastName", "Smith");
+
+        assertTrue(schema.isValid(human));
+    }
+
+    @Test
+    void testShapeInvalidWithNullLastName() {
+        var validator = new Validator();
+        MapSchema schema = validator.map();
+
+        Map<String, BaseSchema<?>> schemas = new HashMap<>();
+        schemas.put("firstName", validator.string().required());
+        schemas.put("lastName", validator.string().required().minLength(2));
+
+        schema.shape(schemas);
+
+        Map<String, String> human = new HashMap<>();
+        human.put("firstName", "John");
+        human.put("lastName", null);
+
+        assertFalse(schema.isValid(human));
+    }
+
+    @Test
+    void testShapeInvalidWithShortLastName() {
+        var validator = new Validator();
+        MapSchema schema = validator.map();
+
+        Map<String, BaseSchema<?>> schemas = new HashMap<>();
+        schemas.put("firstName", validator.string().required());
+        schemas.put("lastName", validator.string().required().minLength(2));
+
+        schema.shape(schemas);
+
+        Map<String, String> human = new HashMap<>();
+        human.put("firstName", "Anna");
+        human.put("lastName", "B");
+
+        assertFalse(schema.isValid(human));
+    }
+
+    @Test
+    void testShapeWithAdditionalConstraints() {
+        var validator = new Validator();
+        MapSchema schema = validator.map().required().sizeof(2);
+
+        Map<String, BaseSchema<?>> schemas = new HashMap<>();
+        schemas.put("name", validator.string().required().contains("ex"));
+        schemas.put("age", validator.number().required().positive().range(18, 60));
+
+        schema.shape(schemas);
+
+        Map<String, Object> user = new HashMap<>();
+        user.put("name", "Alex");
+        user.put("age", 25);
+
+        assertTrue(schema.isValid(user));
+
+        user.put("age", 17);
+        assertFalse(schema.isValid(user));
+
+        user.put("age", 25);
+        user.put("name", "Bob");
+        assertFalse(schema.isValid(user));
     }
 }

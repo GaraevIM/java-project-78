@@ -16,6 +16,11 @@ public class BaseSchema<T> {
         return true;
     }
 
+    @SuppressWarnings("unchecked")
+    public boolean isValidValue(Object value) {
+        return isValid((T) value);
+    }
+
     protected void addCheck(String name, Predicate<T> check) {
         checks.put(name, check);
     }
