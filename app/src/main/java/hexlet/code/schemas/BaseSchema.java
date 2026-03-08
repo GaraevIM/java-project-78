@@ -7,7 +7,7 @@ import java.util.function.Predicate;
 public class BaseSchema<T> {
     private final Map<String, Predicate<T>> checks = new LinkedHashMap<>();
 
-    public boolean isValid(T value) {
+    public final boolean isValid(T value) {
         for (var check : checks.values()) {
             if (!check.test(value)) {
                 return false;
@@ -17,11 +17,11 @@ public class BaseSchema<T> {
     }
 
     @SuppressWarnings("unchecked")
-    public boolean isValidValue(Object value) {
+    public final boolean isValidValue(Object value) {
         return isValid((T) value);
     }
 
-    protected void addCheck(String name, Predicate<T> check) {
+    protected final void addCheck(String name, Predicate<T> check) {
         checks.put(name, check);
     }
 }
