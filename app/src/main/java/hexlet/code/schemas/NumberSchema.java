@@ -12,7 +12,7 @@ public class NumberSchema extends BaseSchema<Integer> {
     }
 
     public NumberSchema range(int start, int end) {
-        addCheck("range", value -> value == null || (value >= start && value <= end));
+        addCheck("range", value -> value == null || value >= start && value <= end);
         return this;
     }
 }

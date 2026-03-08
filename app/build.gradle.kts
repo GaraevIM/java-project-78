@@ -1,5 +1,5 @@
 plugins {
-    application
+    java
     checkstyle
     jacoco
     id("org.sonarqube") version "5.1.0.4882"
@@ -10,10 +10,6 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
-}
-
-application {
-    mainClass.set("hexlet.code.App")
 }
 
 dependencies {
