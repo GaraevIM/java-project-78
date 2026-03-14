@@ -24,7 +24,10 @@ public final class MapSchema extends BaseSchema<Map<?, ?>> {
                 var schema = entry.getValue();
                 var fieldValue = value.get(key);
 
-                if (!schema.isValidValue(fieldValue)) {
+                @SuppressWarnings("unchecked")
+                var typedSchema = (BaseSchema<Object>) schema;
+
+                if (!typedSchema.isValid(fieldValue)) {
                     return false;
                 }
             }
